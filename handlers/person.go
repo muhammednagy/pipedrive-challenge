@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"github.com/labstack/echo/v4"
 	"github.com/muhammednagy/pipedirve-challenge/db"
 	"github.com/muhammednagy/pipedirve-challenge/models"
@@ -28,4 +29,16 @@ func (h PersonHandler) GetPerson(c echo.Context) error {
 		return c.String(http.StatusNotFound, "Person not found")
 	}
 	return c.JSON(http.StatusOK, people[0])
+}
+
+func (h PersonHandler) SavePerson(c echo.Context) error {
+	var person models.Person
+	if err := c.Bind(&person); err != nil {
+		return c.String(http.StatusBadRequest, fmt.Sprint("err parsing request: ", err))
+	}
+	if err := db.SavePerson(h.db, person); err != nil {
+		return c.String(http.StatusBadRequest, fmt.Sprint("err saving person: ", err))
+	}
+
+	return c.NoContent(http.StatusCreated)
 }

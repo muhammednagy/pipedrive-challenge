@@ -19,5 +19,6 @@ func New(config models.Config) *echo.Echo {
 	apiV1 := e.Group("/api/v1")
 	apiV1.GET("/people", personHandler.GetAllPeople)
 	apiV1.GET("/person/:username", personHandler.GetPerson)
+	apiV1.POST("/person", personHandler.SavePerson)
 	return e
 }
