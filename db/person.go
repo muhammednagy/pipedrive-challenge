@@ -1,8 +1,8 @@
 package db
 
 import (
-	"github.com/jinzhu/gorm"
 	"github.com/muhammednagy/pipedirve-challenge/models"
+	"gorm.io/gorm"
 )
 
 // Gets all persons if not supplied with username

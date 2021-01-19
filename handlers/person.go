@@ -1,10 +1,10 @@
 package handlers
 
 import (
-	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo/v4"
 	"github.com/muhammednagy/pipedirve-challenge/db"
 	"github.com/muhammednagy/pipedirve-challenge/models"
+	"gorm.io/gorm"
 	"net/http"
 )
 

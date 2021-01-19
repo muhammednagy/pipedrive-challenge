@@ -22,7 +22,7 @@ type (
 		Email          string    `gorm:"size:100;not null;unique" json:"email"`
 		LastVisit      time.Time `json:"last_visit"`
 		PipedriveID    uint32    `json:"pipedrive_id"`
-		Gists          []Gist    `json:"gists"`
+		Gists          []*Gist   `json:"gists"`
 	}
 
 	Gist struct {
@@ -30,5 +30,6 @@ type (
 		RawURL     string `json:"raw_url"`
 		PullURL    string `json:"pull_url"`
 		ActivityID uint32 `json:"activity_id"`
+		PersonID   uint   `json:"-"`
 	}
 )
