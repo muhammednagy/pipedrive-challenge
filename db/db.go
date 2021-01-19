@@ -10,13 +10,14 @@ import (
 )
 
 func New(config models.Config) *gorm.DB {
-	DBConnection, err := gorm.Open("sqlite3", config.DBName)
+	dbConnection, err := gorm.Open("sqlite3", config.DBName)
 	if err != nil {
 		fmt.Println("Cannot connect to  database")
 		log.Fatal("storage err: ", err)
 	}
-	DBConnection.Exec("PRAGMA foreign_keys = ON")
-	return DBConnection
+	dbConnection.Exec("PRAGMA foreign_keys = ON")
+	AutoMigrate(dbConnection)
+	return dbConnection
 }
 
 func TestDB() *gorm.DB {

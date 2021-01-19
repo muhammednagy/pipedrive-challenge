@@ -1,11 +1,8 @@
 package main
 
 import (
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
 	"github.com/muhammednagy/pipedirve-challenge/config"
-	"github.com/muhammednagy/pipedirve-challenge/db"
-	log "github.com/sirupsen/logrus"
+	"github.com/muhammednagy/pipedirve-challenge/router"
 )
 
 // @title Pipedrive DevOps Challenge
@@ -14,14 +11,8 @@ import (
 // @contact.email me@muhnagy.com
 
 func main() {
-	log.SetFormatter(&log.TextFormatter{
-		FullTimestamp: true,
-	})
-
 	configuration := config.FlagParse()
 
-	e := echo.New()
-	e.Use(middleware.Logger())
-	e.Use(middleware.Recover())
-	db.AutoMigrate(db.New(configuration))
+	r := router.New(configuration)
+	r.Logger.Fatal(r.Start("127.0.0.1" + configuration.Port))
 }
