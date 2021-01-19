@@ -42,3 +42,11 @@ func (h PersonHandler) SavePerson(c echo.Context) error {
 
 	return c.NoContent(http.StatusCreated)
 }
+
+func (h PersonHandler) DeletePerson(c echo.Context) error {
+	err := db.DeletePerson(h.db, c.Param("username"))
+	if err != nil {
+		return c.String(http.StatusBadRequest, fmt.Sprint("err deleting person: ", err))
+	}
+	return c.NoContent(http.StatusOK)
+}

@@ -21,3 +21,9 @@ func SavePerson(dbConnection *gorm.DB, person models.Person) error {
 	err := dbConnection.Create(&person).Error
 	return err
 }
+
+func DeletePerson(dbConnection *gorm.DB, username string) error {
+	person := GetPeople(dbConnection, username)[0]
+	err := dbConnection.Delete(&person).Error
+	return err
+}
