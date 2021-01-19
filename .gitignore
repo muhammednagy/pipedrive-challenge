@@ -16,3 +16,6 @@
 
 # Ignore goland files
 .idea 
+
+# Ignore sqlite db 
+*.sqlite3
