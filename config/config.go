@@ -11,10 +11,10 @@ var (
 	buildTime      string
 	version        string
 	showVersion    = flag.Bool("version", false, "Print version")
-	pipedriveToken = flag.String("pipedrive token", os.Getenv("PIPEDRIVE_TOKEN"), "Pipedrive token")
-	GithubToken    = flag.String("github token", os.Getenv("GITHUB_TOKEN"), "github API token")
-	DBName         = flag.String("database name", os.Getenv("DATABASE_NAME"), "Sqlite DB name")
-	Port           = flag.String("application listening port", os.Getenv("PORT"), "Listen to port")
+	pipedriveToken = flag.String("pipedrive_token", os.Getenv("PIPEDRIVE_TOKEN"), "Pipedrive token")
+	GithubToken    = flag.String("github_token", os.Getenv("GITHUB_TOKEN"), "github API token")
+	DBName         = flag.String("database_name", os.Getenv("DATABASE_NAME"), "Sqlite DB name")
+	Port           = flag.String("port", os.Getenv("PORT"), "Listen to port")
 )
 
 func FlagParse() models.Config {
