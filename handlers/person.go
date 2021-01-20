@@ -9,6 +9,7 @@ import (
 	"net/http"
 )
 
+// TEST
 type PersonHandler struct {
 	config models.Config
 	db     *gorm.DB
