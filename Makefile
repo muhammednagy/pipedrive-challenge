@@ -9,7 +9,7 @@ run:
 	go run $(FILES)
 
 clean:
-	rm -rf bin
+	rm -f pipedrive
 
 test:
 	go test ./...
