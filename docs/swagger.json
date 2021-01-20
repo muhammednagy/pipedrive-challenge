@@ -1,0 +1,190 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "API to query users gists then save it to",
+        "title": "Pipedrive DevOps Challenge",
+        "contact": {
+            "name": "Nagy Salem",
+            "email": "me@muhnagy.com"
+        }
+    },
+    "paths": {
+        "/api/v1/people": {
+            "get": {
+                "description": "gets all people who their gists are being monitored",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Person"
+                ],
+                "summary": "gets all people who their gists are being monitored",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Person"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/person": {
+            "post": {
+                "description": "Creates person using json",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Person"
+                ],
+                "summary": "Creates person",
+                "parameters": [
+                    {
+                        "description": "assignment Request",
+                        "name": "models.Person",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Person"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/person/{username}": {
+            "get": {
+                "description": "gets a specific person based on their username",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Person"
+                ],
+                "summary": "gets a specific person based on their username",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "github username of the user you want",
+                        "name": "username",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Person"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Deletes person using username",
+                "tags": [
+                    "Person"
+                ],
+                "summary": "Deletes person",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "github username of the user you want to delete",
+                        "name": "username",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.Gist": {
+            "type": "object",
+            "properties": {
+                "activity_id": {
+                    "type": "integer"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "pull_url": {
+                    "type": "string"
+                },
+                "raw_url": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Person": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "gists": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Gist"
+                    }
+                },
+                "github_username": {
+                    "description": "Github max length is 39",
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "last_visit": {
+                    "type": "string"
+                },
+                "pipedrive_id": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

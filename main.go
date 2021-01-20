@@ -2,14 +2,14 @@ package main
 
 import (
 	"github.com/muhammednagy/pipedirve-challenge/config"
+	_ "github.com/muhammednagy/pipedirve-challenge/docs"
 	"github.com/muhammednagy/pipedirve-challenge/router"
 )
 
 // @title Pipedrive DevOps Challenge
-// @version 0.1.0
 // @description API to query users gists then save it to
+// @contact.name Nagy Salem
 // @contact.email me@muhnagy.com
-
 func main() {
 	configuration := config.FlagParse()
 

@@ -6,6 +6,7 @@ import (
 	"github.com/muhammednagy/pipedirve-challenge/db"
 	"github.com/muhammednagy/pipedirve-challenge/handlers"
 	"github.com/muhammednagy/pipedirve-challenge/models"
+	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
 func New(config models.Config) *echo.Echo {
@@ -17,6 +18,7 @@ func New(config models.Config) *echo.Echo {
 	e.Use(middleware.Recover())
 	e.Use(middleware.RemoveTrailingSlash())
 
+	e.GET("/documentation/*", echoSwagger.WrapHandler)
 	apiV1 := e.Group("/api/v1")
 	apiV1.GET("/people", personHandler.GetAllPeople)
 	apiV1.GET("/person/:username", personHandler.GetPerson)

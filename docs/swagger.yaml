@@ -1,0 +1,124 @@
+definitions:
+  models.Gist:
+    properties:
+      activity_id:
+        type: integer
+      created_at:
+        type: string
+      id:
+        type: integer
+      pull_url:
+        type: string
+      raw_url:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  models.Person:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      gists:
+        items:
+          $ref: '#/definitions/models.Gist'
+        type: array
+      github_username:
+        description: Github max length is 39
+        type: string
+      id:
+        type: integer
+      last_visit:
+        type: string
+      pipedrive_id:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+info:
+  contact:
+    email: me@muhnagy.com
+    name: Nagy Salem
+  description: API to query users gists then save it to
+  title: Pipedrive DevOps Challenge
+paths:
+  /api/v1/people:
+    get:
+      description: gets all people who their gists are being monitored
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Person'
+            type: array
+      summary: gets all people who their gists are being monitored
+      tags:
+      - Person
+  /api/v1/person:
+    post:
+      consumes:
+      - application/json
+      description: Creates person using json
+      parameters:
+      - description: assignment Request
+        in: body
+        name: models.Person
+        required: true
+        schema:
+          $ref: '#/definitions/models.Person'
+      responses:
+        "201":
+          description: ""
+        "400":
+          description: error
+          schema:
+            type: string
+      summary: Creates person
+      tags:
+      - Person
+  /api/v1/person/{username}:
+    delete:
+      description: Deletes person using username
+      parameters:
+      - description: github username of the user you want to delete
+        in: path
+        name: username
+        required: true
+        type: string
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: error
+          schema:
+            type: string
+      summary: Deletes person
+      tags:
+      - Person
+    get:
+      description: gets a specific person based on their username
+      parameters:
+      - description: github username of the user you want
+        in: path
+        name: username
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Person'
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      summary: gets a specific person based on their username
+      tags:
+      - Person
+swagger: "2.0"
