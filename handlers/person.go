@@ -62,7 +62,7 @@ func (h PersonHandler) SavePerson(c echo.Context) error {
 		return c.String(http.StatusBadRequest, fmt.Sprint("err parsing request: ", err))
 	}
 	if person.GithubUsername == "" {
-		return c.String(http.StatusBadRequest, fmt.Sprint("missing github username"))
+		return c.String(http.StatusBadRequest, "missing github username")
 	}
 	if err := db.SavePerson(h.db, person); err != nil {
 		return c.String(http.StatusBadRequest, fmt.Sprint("err saving person: ", err))
