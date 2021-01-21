@@ -54,7 +54,7 @@ var doc = `{
             "post": {
                 "description": "Creates person using json",
                 "consumes": [
-                    "application/json"
+                    "application/x-www-form-urlencoded"
                 ],
                 "tags": [
                     "Person"
@@ -62,13 +62,11 @@ var doc = `{
                 "summary": "Creates person",
                 "parameters": [
                     {
-                        "description": "assignment Request",
-                        "name": "models.Person",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.Person"
-                        }
+                        "type": "string",
+                        "description": "username",
+                        "name": "username",
+                        "in": "formData",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -175,9 +173,6 @@ var doc = `{
             "type": "object",
             "properties": {
                 "created_at": {
-                    "type": "string"
-                },
-                "email": {
                     "type": "string"
                 },
                 "gists": {

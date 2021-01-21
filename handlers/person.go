@@ -51,20 +51,17 @@ func (h PersonHandler) GetPerson(c echo.Context) error {
 // @Summary Creates person
 // @Description Creates person using json
 // @Tags Person
-// @Accept  json
-// @Param models.Person body models.Person  true "assignment Request"
+// @Accept  x-www-form-urlencoded
+// @Param username formData string  true "username"
 // @Success 201
 // @Failure 400 {string} string	"error"
 // @Router /api/v1/person [post]
 func (h PersonHandler) SavePerson(c echo.Context) error {
-	var person models.Person
-	if err := c.Bind(&person); err != nil {
-		return c.String(http.StatusBadRequest, fmt.Sprint("err parsing request: ", err))
-	}
-	if person.GithubUsername == "" {
+	username := c.FormValue("username")
+	if username == "" {
 		return c.String(http.StatusBadRequest, "missing github username")
 	}
-	if err := db.SavePerson(h.db, person); err != nil {
+	if err := db.SavePerson(h.db, username); err != nil {
 		return c.String(http.StatusBadRequest, fmt.Sprint("err saving person: ", err))
 	}
 
