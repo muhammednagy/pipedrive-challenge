@@ -4,8 +4,7 @@ import (
 	"fmt"
 	"github.com/muhammednagy/pipedirve-challenge/models"
 	log "github.com/sirupsen/logrus"
-	"gorm.io/driver/sqlite"
-	_ "gorm.io/driver/sqlite" // sqlite database driver
+	"gorm.io/driver/sqlite" // sqlite database driver
 	"gorm.io/gorm"
 	"os"
 )
