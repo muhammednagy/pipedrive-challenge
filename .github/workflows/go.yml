@@ -46,9 +46,9 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: check
-        uses: grandcolline/golang-github-actions@v1.1.0
+        uses: golangci/golangci-lint-action@v2.3.0
         with:
-          run: lint
+          version: v1.35
 
   shadow:
     name: Shadow
