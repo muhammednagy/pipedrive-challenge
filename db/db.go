@@ -43,5 +43,6 @@ func AutoMigrate(db *gorm.DB) error {
 	return db.AutoMigrate(
 		&models.Person{},
 		&models.Gist{},
+		&models.GistFile{},
 	)
 }

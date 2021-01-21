@@ -26,9 +26,16 @@ type (
 
 	Gist struct {
 		DBModel
-		RawURL     string `json:"raw_url"`
-		PullURL    string `json:"pull_url"`
-		ActivityID uint32 `json:"activity_id"`
-		PersonID   uint   `json:"-"`
+		Description string     `json:"description"`
+		PullURL     string     `json:"pull_url"`
+		PersonID    uint       `json:"-"`
+		Files       []GistFile `json:"files"`
+	}
+
+	GistFile struct {
+		DBModel
+		GistID uint   `json:"-"`
+		Name   string `json:"name"`
+		RawURL string `json:"raw_url"`
 	}
 )
