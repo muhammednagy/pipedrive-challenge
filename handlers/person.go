@@ -5,6 +5,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/muhammednagy/pipedirve-challenge/db"
 	"github.com/muhammednagy/pipedirve-challenge/models"
+	"github.com/muhammednagy/pipedirve-challenge/services/pipedrive"
 	"gorm.io/gorm"
 	"net/http"
 )
@@ -73,8 +74,13 @@ func (h PersonHandler) SavePerson(c echo.Context) error {
 	if username == "" {
 		return c.String(http.StatusBadRequest, "missing github username")
 	}
-	if err := db.SavePerson(h.db, username); err != nil {
-		return c.String(http.StatusBadRequest, fmt.Sprint("err saving person: ", err))
+	pipedrivePersonID := pipedrive.CreatePerson(username, h.config.PipedriveToken)
+	if pipedrivePersonID == 0 {
+		return c.String(http.StatusInternalServerError, "error creating a person in pipedrive")
+	}
+	person := models.Person{GithubUsername: username, PipedriveID: uint(pipedrivePersonID)}
+	if err := db.SavePerson(h.db, person); err != nil {
+		return c.String(http.StatusBadRequest, fmt.Sprint("error saving person: ", err))
 	}
 
 	return c.NoContent(http.StatusCreated)

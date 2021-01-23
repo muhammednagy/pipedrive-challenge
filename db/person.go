@@ -18,8 +18,7 @@ func GetPeople(dbConnection *gorm.DB, username string) []models.Person {
 	return persons
 }
 
-func SavePerson(dbConnection *gorm.DB, username string) error {
-	person := models.Person{GithubUsername: username}
+func SavePerson(dbConnection *gorm.DB, person models.Person) error {
 	err := dbConnection.Create(&person).Error
 	return err
 }
