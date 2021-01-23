@@ -18,10 +18,10 @@ type (
 
 	Person struct {
 		DBModel
-		GithubUsername string    `gorm:"size:39;not null;unique;index" json:"github_username"` // Github max length is 39
-		LastVisit      time.Time `json:"last_visit"`
-		PipedriveID    uint32    `json:"pipedrive_id"`
-		Gists          []Gist    `json:"gists" gorm:"OnDelete:SET NULL"`
+		GithubUsername string     `gorm:"size:39;not null;unique;index" json:"github_username"` // Github max length is 39
+		LastVisit      *time.Time `json:"last_visit"`
+		PipedriveID    uint32     `json:"pipedrive_id"`
+		Gists          []Gist     `json:"gists" gorm:"OnDelete:SET NULL"`
 	}
 
 	Gist struct {

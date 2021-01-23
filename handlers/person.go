@@ -36,6 +36,7 @@ func (h PersonHandler) GetAllPeople(c echo.Context) error {
 // @Tags Person
 // @Produce  json
 // @Param username path string true "github username of the user you want"
+// @Param getAllGists query bool false "get all gists not only the ones added since last visit"
 // @Success 200 {object} models.Person
 // @Failure 404 {object} string
 // @Router /api/v1/person/{username} [get]
@@ -44,7 +45,18 @@ func (h PersonHandler) GetPerson(c echo.Context) error {
 	if len(people) == 0 {
 		return c.String(http.StatusNotFound, "Person not found")
 	}
-	return c.JSON(http.StatusOK, people[0])
+	var gistsSinceLastVisit []models.Gist
+	person := people[0]
+	if person.LastVisit != nil && c.QueryParam("getAllGists") != "true" {
+		for _, gist := range person.Gists {
+			// convert to unix to avoid returning false if there is milliseconds difference
+			if gist.CreatedAt.Unix() == person.LastVisit.Unix() || gist.CreatedAt.After(*person.LastVisit) {
+				gistsSinceLastVisit = append(gistsSinceLastVisit, gist)
+			}
+		}
+		person.Gists = gistsSinceLastVisit
+	}
+	return c.JSON(http.StatusOK, person)
 }
 
 // Create person

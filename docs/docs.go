@@ -99,6 +99,12 @@ var doc = `{
                         "name": "username",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "get all gists not only the ones added since last visit",
+                        "name": "getAllGists",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -149,16 +155,39 @@ var doc = `{
         "models.Gist": {
             "type": "object",
             "properties": {
-                "activity_id": {
+                "created_at": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "files": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.GistFile"
+                    }
+                },
+                "id": {
                     "type": "integer"
                 },
+                "pull_url": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.GistFile": {
+            "type": "object",
+            "properties": {
                 "created_at": {
                     "type": "string"
                 },
                 "id": {
                     "type": "integer"
                 },
-                "pull_url": {
+                "name": {
                     "type": "string"
                 },
                 "raw_url": {

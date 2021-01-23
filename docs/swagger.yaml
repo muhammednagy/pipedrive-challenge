@@ -1,13 +1,28 @@
 definitions:
   models.Gist:
     properties:
-      activity_id:
+      created_at:
+        type: string
+      description:
+        type: string
+      files:
+        items:
+          $ref: '#/definitions/models.GistFile'
+        type: array
+      id:
         type: integer
+      pull_url:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  models.GistFile:
+    properties:
       created_at:
         type: string
       id:
         type: integer
-      pull_url:
+      name:
         type: string
       raw_url:
         type: string
@@ -104,6 +119,10 @@ paths:
         name: username
         required: true
         type: string
+      - description: get all gists not only the ones added since last visit
+        in: query
+        name: getAllGists
+        type: boolean
       produces:
       - application/json
       responses:
