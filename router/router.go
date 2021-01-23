@@ -3,14 +3,13 @@ package router
 import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"github.com/muhammednagy/pipedirve-challenge/db"
 	"github.com/muhammednagy/pipedirve-challenge/handlers"
 	"github.com/muhammednagy/pipedirve-challenge/models"
 	echoSwagger "github.com/swaggo/echo-swagger"
+	"gorm.io/gorm"
 )
 
-func New(config models.Config) *echo.Echo {
-	dbConnection := db.New(config)
+func New(config models.Config, dbConnection *gorm.DB) *echo.Echo {
 	personHandler := handlers.NewPersonHandler(config, dbConnection)
 
 	e := echo.New()
