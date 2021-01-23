@@ -51,12 +51,12 @@ func CreatePerson(username, token string) int {
 
 // Create a new activity connected to a person with subject and a note to hold gist info and its files links or
 // pull url if it's truncated due to big size
-func CreateActivity(subject, note, token string, personID int) error {
+func CreateActivity(subject, note, token string, personID uint) error {
 	var status models.PipedriveResponseStatus
 	parameters := struct {
 		Subject  string `json:"subject"`
 		Note     string `json:"note"`
-		PersonId int    `json:"person_id"`
+		PersonId uint   `json:"person_id"`
 	}{
 		subject,
 		note,
@@ -75,5 +75,5 @@ func CreateActivity(subject, note, token string, personID int) error {
 	if !status.Success {
 		return fmt.Errorf("failed to create activity in Pipedrive error: %s", status.Error)
 	}
-	return fmt.Errorf(status.Error)
+	return nil
 }
