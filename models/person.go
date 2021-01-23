@@ -11,7 +11,7 @@ type (
 	}
 
 	DBModel struct {
-		ID        uint32    `gorm:"primary_key;auto_increment" json:"id"`
+		ID        uint      `gorm:"primary_key;auto_increment" json:"id"`
 		CreatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
 		UpdatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
 	}
@@ -21,7 +21,7 @@ type (
 		GithubUsername string    `gorm:"size:39;not null;unique;index" json:"github_username"` // Github max length is 39
 		LastVisit      time.Time `json:"last_visit"`
 		PipedriveID    uint32    `json:"pipedrive_id"`
-		Gists          []*Gist   `json:"gists"`
+		Gists          []Gist    `json:"gists" gorm:"OnDelete:SET NULL"`
 	}
 
 	Gist struct {

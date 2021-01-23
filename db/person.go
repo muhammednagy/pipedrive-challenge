@@ -10,7 +10,7 @@ import (
 // if supplied with username will return the person with matching username
 func GetPeople(dbConnection *gorm.DB, username string) []models.Person {
 	var persons []models.Person
-	query := dbConnection.Table("people")
+	query := dbConnection.Preload("Gists.Files").Table("people")
 	if username != "" {
 		query = query.Where("github_username = ?", username)
 	}
