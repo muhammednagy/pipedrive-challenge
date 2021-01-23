@@ -24,7 +24,7 @@ func makeRequest(token, path string, body []byte) ([]byte, error) {
 	return body, nil
 }
 
-// Create a new person in Pipedrive which should have the same name as the github username
+// CreatePerson Create a new person in Pipedrive which should have the same name as the github username
 func CreatePerson(username, token string) int {
 	var createPersonResponse models.PipedriveCreatePersonResponse
 	parameters := map[string]string{
@@ -49,14 +49,14 @@ func CreatePerson(username, token string) int {
 	return createPersonResponse.Data.ID
 }
 
-// Create a new activity connected to a person with subject and a note to hold gist info and its files links or
+// CreateActivity Create a new activity connected to a person with subject and a note to hold gist info and its files links or
 // pull url if it's truncated due to big size
 func CreateActivity(subject, note, token string, personID uint) error {
 	var status models.PipedriveResponseStatus
 	parameters := struct {
 		Subject  string `json:"subject"`
 		Note     string `json:"note"`
-		PersonId uint   `json:"person_id"`
+		PersonID uint   `json:"person_id"`
 	}{
 		subject,
 		note,

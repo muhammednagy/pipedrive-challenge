@@ -11,6 +11,7 @@ import (
 	"time"
 )
 
+// ExportGists will get all persons from DB then get their gists then add new activities to pipedrive
 func ExportGists(dbConnection *gorm.DB, config models.Config) {
 	people := db.GetPeople(dbConnection, "")
 	for personIndex := range people {

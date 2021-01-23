@@ -10,8 +10,7 @@ import (
 	"time"
 )
 
-// Get Gists
-// Will get all gists by a user in one requests if they are less than 100 or more than one request if they are more
+// GetGists Will get all gists by a user in one requests if they are less than 100 or more than one request if they are more
 // if you provide githubToken it will be able to do more requests before it gets rate limited
 func GetGists(config models.Config, lastVisit *time.Time, username string) ([]*github.Gist, error) {
 	tc := &http.Client{}
