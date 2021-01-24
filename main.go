@@ -16,7 +16,7 @@ import (
 // @contact.name Nagy Salem
 // @contact.email me@muhnagy.com
 func main() {
-	configuration := config.FlagParse()
+	configuration := config.ParseFlags()
 	dbConnection := db.New(configuration)
 	personHandler := handlers.NewPersonHandler(configuration, dbConnection)
 	r := router.New(personHandler)

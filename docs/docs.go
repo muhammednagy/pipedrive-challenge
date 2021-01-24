@@ -43,7 +43,7 @@ var doc = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.Person"
+                                "$ref": "#/definitions/model.Person"
                             }
                         }
                     }
@@ -111,7 +111,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Person"
+                            "$ref": "#/definitions/model.Person"
                         }
                     },
                     "404": {
@@ -152,7 +152,7 @@ var doc = `{
         }
     },
     "definitions": {
-        "models.Gist": {
+        "model.Gist": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -164,7 +164,7 @@ var doc = `{
                 "files": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.GistFile"
+                        "$ref": "#/definitions/model.GistFile"
                     }
                 },
                 "id": {
@@ -178,7 +178,7 @@ var doc = `{
                 }
             }
         },
-        "models.GistFile": {
+        "model.GistFile": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -198,7 +198,7 @@ var doc = `{
                 }
             }
         },
-        "models.Person": {
+        "model.Person": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -207,7 +207,7 @@ var doc = `{
                 "gists": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.Gist"
+                        "$ref": "#/definitions/model.Gist"
                     }
                 },
                 "github_username": {

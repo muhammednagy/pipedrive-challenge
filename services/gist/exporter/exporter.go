@@ -3,7 +3,7 @@ package exporter
 import (
 	"fmt"
 	"github.com/muhammednagy/pipedirve-challenge/db"
-	"github.com/muhammednagy/pipedirve-challenge/models"
+	"github.com/muhammednagy/pipedirve-challenge/model"
 	"github.com/muhammednagy/pipedirve-challenge/services/github"
 	"github.com/muhammednagy/pipedirve-challenge/services/pipedrive"
 	log "github.com/sirupsen/logrus"
@@ -12,7 +12,7 @@ import (
 )
 
 // ExportGists will get all persons from DB then get their gists then add new activities to pipedrive
-func ExportGists(dbConnection *gorm.DB, config models.Config) {
+func ExportGists(dbConnection *gorm.DB, config model.Config) {
 	people := db.GetPeople(dbConnection, "")
 	for personIndex := range people {
 		gists, err := github.GetGists(config, people[personIndex].LastVisit, people[personIndex].GithubUsername)
@@ -21,7 +21,7 @@ func ExportGists(dbConnection *gorm.DB, config models.Config) {
 		} else {
 			dbConnection.Model(&people[personIndex]).Update("last_visit", time.Now().UTC())
 			for _, gist := range gists {
-				var files []models.GistFile
+				var files []model.GistFile
 				var notes string
 				var subject string
 				if gist.GetDescription() != "" {
@@ -36,14 +36,14 @@ func ExportGists(dbConnection *gorm.DB, config models.Config) {
 					gist.GetGitPullURL(),
 				)
 				for _, file := range gist.Files {
-					files = append(files, models.GistFile{
+					files = append(files, model.GistFile{
 						Name:   file.GetFilename(),
 						RawURL: file.GetRawURL(),
 					})
 					notes += fmt.Sprintf("File Name: %s<br> File URL %s<br>", file.GetFilename(), file.GetRawURL())
 				}
 
-				dbConnection.Create(&models.Gist{
+				dbConnection.Create(&model.Gist{
 					Description: gist.GetDescription(),
 					PullURL:     gist.GetGitPullURL(),
 					PersonID:    people[personIndex].ID,

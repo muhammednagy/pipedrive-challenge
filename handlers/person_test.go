@@ -5,8 +5,8 @@ import (
 	"github.com/jarcoal/httpmock"
 	"github.com/labstack/echo/v4"
 	"github.com/muhammednagy/pipedirve-challenge/db"
-	"github.com/muhammednagy/pipedirve-challenge/models"
-	"github.com/muhammednagy/pipedirve-challenge/testing/utils"
+	"github.com/muhammednagy/pipedirve-challenge/model"
+	"github.com/muhammednagy/pipedirve-challenge/testing/util"
 	"github.com/stretchr/testify/assert"
 	"gorm.io/gorm"
 	"net/http"
@@ -23,20 +23,20 @@ var (
 func setup() {
 	d = db.TestDB()
 	_ = db.AutoMigrate(d)
-	h = NewPersonHandler(models.Config{}, d)
+	h = NewPersonHandler(model.Config{}, d)
 	e = echo.New()
-	_ = utils.LoadFixtures(d)
+	_ = util.LoadFixtures(d)
 }
 
 func TestGetPeople(t *testing.T) {
-	utils.TearDown()
+	util.TearDown()
 	setup()
 	req := httptest.NewRequest(echo.GET, "/api/v1/people", nil)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
 	assert.NoError(t, h.GetAllPeople(c))
 	if assert.Equal(t, http.StatusOK, rec.Code) {
-		var response []models.Person
+		var response []model.Person
 		err := json.Unmarshal(rec.Body.Bytes(), &response)
 		assert.NoError(t, err)
 		assert.Equal(t, 2, len(response))
@@ -44,7 +44,7 @@ func TestGetPeople(t *testing.T) {
 }
 
 func TestSavePerson(t *testing.T) {
-	utils.TearDown()
+	util.TearDown()
 	setup()
 	testCases := map[string]struct {
 		statusCode int
@@ -75,9 +75,9 @@ func TestSavePerson(t *testing.T) {
 	defer httpmock.DeactivateAndReset()
 	for _, tp := range testCases {
 		if tp.mocked {
-			utils.MockPipedrive()
+			util.MockPipedrive()
 		}
-		req := httptest.NewRequest(echo.GET, "/api/v1/person", nil)
+		req := httptest.NewRequest(echo.GET, "/api/v1/people", nil)
 		q := req.URL.Query()
 		q.Add("username", tp.username)
 		req.URL.RawQuery = q.Encode()
@@ -89,7 +89,7 @@ func TestSavePerson(t *testing.T) {
 }
 
 func TestDeletePerson(t *testing.T) {
-	utils.TearDown()
+	util.TearDown()
 	setup()
 	testCases := map[string]struct {
 		statusCode int
@@ -106,7 +106,7 @@ func TestDeletePerson(t *testing.T) {
 	}
 
 	for _, tp := range testCases {
-		req := httptest.NewRequest(echo.DELETE, "/api/v1/person/"+tp.username, nil)
+		req := httptest.NewRequest(echo.DELETE, "/api/v1/people/"+tp.username, nil)
 		rec := httptest.NewRecorder()
 		c := e.NewContext(req, rec)
 		c.SetParamNames("username")
@@ -117,7 +117,7 @@ func TestDeletePerson(t *testing.T) {
 }
 
 func TestGetPerson(t *testing.T) {
-	utils.TearDown()
+	util.TearDown()
 	setup()
 	testCases := map[string]struct {
 		params         map[string]string
@@ -154,7 +154,7 @@ func TestGetPerson(t *testing.T) {
 	}
 
 	for _, tp := range testCases {
-		req := httptest.NewRequest(echo.GET, "/api/v1/person/"+tp.username, nil)
+		req := httptest.NewRequest(echo.GET, "/api/v1/people/"+tp.username, nil)
 		q := req.URL.Query()
 		for k, v := range tp.params {
 			q.Add(k, v)
@@ -166,7 +166,7 @@ func TestGetPerson(t *testing.T) {
 		c.SetParamValues(tp.username)
 		assert.NoError(t, h.GetPerson(c))
 		if assert.Equal(t, tp.statusCode, rec.Code) && tp.statusCode != http.StatusNotFound {
-			var response models.Person
+			var response model.Person
 			err := json.Unmarshal(rec.Body.Bytes(), &response)
 			assert.NoError(t, err)
 			assert.Equal(t, tp.responseLength, len(response.Gists))

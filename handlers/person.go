@@ -4,18 +4,18 @@ import (
 	"fmt"
 	"github.com/labstack/echo/v4"
 	"github.com/muhammednagy/pipedirve-challenge/db"
-	"github.com/muhammednagy/pipedirve-challenge/models"
+	"github.com/muhammednagy/pipedirve-challenge/model"
 	"github.com/muhammednagy/pipedirve-challenge/services/pipedrive"
 	"gorm.io/gorm"
 	"net/http"
 )
 
 type PersonHandler struct {
-	config models.Config
+	config model.Config
 	db     *gorm.DB
 }
 
-func NewPersonHandler(config models.Config, db *gorm.DB) *PersonHandler {
+func NewPersonHandler(config model.Config, db *gorm.DB) *PersonHandler {
 	return &PersonHandler{config: config, db: db}
 }
 
@@ -24,7 +24,7 @@ func NewPersonHandler(config models.Config, db *gorm.DB) *PersonHandler {
 // @Summary gets all people who their gists are being monitored
 // @Description gets all people who their gists are being monitored
 // @Tags Person
-// @Success 200 {object} []models.Person
+// @Success 200 {object} []model.Person
 // @Router /api/v1/people [get]
 func (h PersonHandler) GetAllPeople(c echo.Context) error {
 	people := db.GetPeople(h.db, "")
@@ -38,7 +38,7 @@ func (h PersonHandler) GetAllPeople(c echo.Context) error {
 // @Produce  json
 // @Param username path string true "github username of the user you want"
 // @Param getAllGists query bool false "get all gists not only the ones added since last visit"
-// @Success 200 {object} models.Person
+// @Success 200 {object} model.Person
 // @Failure 404 {object} string
 // @Router /api/v1/person/{username} [get]
 func (h PersonHandler) GetPerson(c echo.Context) error {
@@ -46,7 +46,7 @@ func (h PersonHandler) GetPerson(c echo.Context) error {
 	if len(people) == 0 {
 		return c.String(http.StatusNotFound, "Person not found")
 	}
-	var gistsSinceLastVisit []models.Gist
+	var gistsSinceLastVisit []model.Gist
 	person := people[0]
 	if person.LastVisit != nil && c.QueryParam("getAllGists") != "true" {
 		for _, gist := range person.Gists {
@@ -78,7 +78,7 @@ func (h PersonHandler) SavePerson(c echo.Context) error {
 	if pipedrivePersonID == 0 {
 		return c.String(http.StatusInternalServerError, "error creating a person in pipedrive")
 	}
-	person := models.Person{GithubUsername: username, PipedriveID: uint(pipedrivePersonID)}
+	person := model.Person{GithubUsername: username, PipedriveID: uint(pipedrivePersonID)}
 	if err := db.SavePerson(h.db, person); err != nil {
 		return c.String(http.StatusBadRequest, fmt.Sprint("error saving person: ", err))
 	}

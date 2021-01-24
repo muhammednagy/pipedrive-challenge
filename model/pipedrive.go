@@ -1,4 +1,4 @@
-package models
+package model
 
 type PipedriveCreatePersonResponse struct {
 	Data struct {

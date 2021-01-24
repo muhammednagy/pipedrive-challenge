@@ -2,14 +2,14 @@ package db
 
 import (
 	"fmt"
-	"github.com/muhammednagy/pipedirve-challenge/models"
+	"github.com/muhammednagy/pipedirve-challenge/model"
 	log "github.com/sirupsen/logrus"
 	"gorm.io/driver/sqlite" // sqlite database driver
 	"gorm.io/gorm"
 	"os"
 )
 
-func New(config models.Config) *gorm.DB {
+func New(config model.Config) *gorm.DB {
 	dbConnection, err := gorm.Open(sqlite.Open(config.DBName), &gorm.Config{})
 	if err != nil {
 		fmt.Println("Cannot connect to  database")
@@ -43,8 +43,8 @@ func DropTestDB() error {
 
 func AutoMigrate(db *gorm.DB) error {
 	return db.AutoMigrate(
-		&models.Person{},
-		&models.Gist{},
-		&models.GistFile{},
+		&model.Person{},
+		&model.Gist{},
+		&model.GistFile{},
 	)
 }

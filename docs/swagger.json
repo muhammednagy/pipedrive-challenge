@@ -25,7 +25,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.Person"
+                                "$ref": "#/definitions/model.Person"
                             }
                         }
                     }
@@ -93,7 +93,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Person"
+                            "$ref": "#/definitions/model.Person"
                         }
                     },
                     "404": {
@@ -134,7 +134,7 @@
         }
     },
     "definitions": {
-        "models.Gist": {
+        "model.Gist": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -146,7 +146,7 @@
                 "files": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.GistFile"
+                        "$ref": "#/definitions/model.GistFile"
                     }
                 },
                 "id": {
@@ -160,7 +160,7 @@
                 }
             }
         },
-        "models.GistFile": {
+        "model.GistFile": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -180,7 +180,7 @@
                 }
             }
         },
-        "models.Person": {
+        "model.Person": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -189,7 +189,7 @@
                 "gists": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.Gist"
+                        "$ref": "#/definitions/model.Gist"
                     }
                 },
                 "github_username": {

@@ -2,14 +2,14 @@ package db
 
 import (
 	"fmt"
-	"github.com/muhammednagy/pipedirve-challenge/models"
+	"github.com/muhammednagy/pipedirve-challenge/model"
 	"gorm.io/gorm"
 )
 
 // GetPeople Gets all persons if not supplied with username
 // if supplied with username will return the person with matching username
-func GetPeople(dbConnection *gorm.DB, username string) []models.Person {
-	var persons []models.Person
+func GetPeople(dbConnection *gorm.DB, username string) []model.Person {
+	var persons []model.Person
 	query := dbConnection.Preload("Gists.Files").Table("people")
 	if username != "" {
 		query = query.Where("github_username = ?", username)
@@ -18,7 +18,7 @@ func GetPeople(dbConnection *gorm.DB, username string) []models.Person {
 	return persons
 }
 
-func SavePerson(dbConnection *gorm.DB, person models.Person) error {
+func SavePerson(dbConnection *gorm.DB, person model.Person) error {
 	err := dbConnection.Create(&person).Error
 	return err
 }

@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/muhammednagy/pipedirve-challenge/models"
+	"github.com/muhammednagy/pipedirve-challenge/model"
 	log "github.com/sirupsen/logrus"
 	"io/ioutil"
 	"net/http"
@@ -26,7 +26,7 @@ func makeRequest(token, path string, body []byte) ([]byte, error) {
 
 // CreatePerson Create a new person in Pipedrive which should have the same name as the github username
 func CreatePerson(username, token string) int {
-	var createPersonResponse models.PipedriveCreatePersonResponse
+	var createPersonResponse model.PipedriveCreatePersonResponse
 	parameters := map[string]string{
 		"name": username,
 	}
@@ -52,7 +52,7 @@ func CreatePerson(username, token string) int {
 // CreateActivity Create a new activity connected to a person with subject and a note to hold gist info and its files links or
 // pull url if it's truncated due to big size
 func CreateActivity(subject, note, token string, personID uint) error {
-	var status models.PipedriveResponseStatus
+	var status model.PipedriveResponseStatus
 	parameters := struct {
 		Subject  string `json:"subject"`
 		Note     string `json:"note"`

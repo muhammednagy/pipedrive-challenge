@@ -1,9 +1,9 @@
-package utils
+package util
 
 import (
 	"github.com/jarcoal/httpmock"
 	"github.com/muhammednagy/pipedirve-challenge/db"
-	"github.com/muhammednagy/pipedirve-challenge/models"
+	"github.com/muhammednagy/pipedirve-challenge/model"
 	log "github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 	"time"
@@ -38,38 +38,38 @@ func MockGithub() {
 }
 
 func LoadFixtures(d *gorm.DB) error {
-	p1 := models.Person{
+	p1 := model.Person{
 		GithubUsername: "muhammednagy",
 	}
 	currentTime := time.Now().UTC()
 	oneHourBeforeCurrentTime := currentTime.Add(time.Hour * time.Duration(-1))
 	oneHourAfterCurrentTime := currentTime.Add(time.Hour * time.Duration(1))
-	p2 := models.Person{
+	p2 := model.Person{
 		GithubUsername: "muhammednagy2",
 		LastVisit:      &currentTime,
-		Gists: []models.Gist{{
-			DBModel:     models.DBModel{CreatedAt: currentTime},
+		Gists: []model.Gist{{
+			DBModel:     model.DBModel{CreatedAt: currentTime},
 			Description: "test gist",
 			PullURL:     "http://test.dummy/git1",
-			Files: []models.GistFile{{
+			Files: []model.GistFile{{
 				Name:   "test.go",
 				RawURL: "http://test.dummy/test.go",
 			}},
 		},
 			{
-				DBModel:     models.DBModel{CreatedAt: oneHourBeforeCurrentTime},
+				DBModel:     model.DBModel{CreatedAt: oneHourBeforeCurrentTime},
 				Description: "test gist made one hour earlier",
 				PullURL:     "http://test.dummy/git1",
-				Files: []models.GistFile{{
+				Files: []model.GistFile{{
 					Name:   "test.go",
 					RawURL: "http://test.dummy/test.go",
 				}},
 			},
 			{
-				DBModel:     models.DBModel{CreatedAt: oneHourAfterCurrentTime},
+				DBModel:     model.DBModel{CreatedAt: oneHourAfterCurrentTime},
 				Description: "test gist made one hour later",
 				PullURL:     "http://test.dummy/git1",
-				Files: []models.GistFile{{
+				Files: []model.GistFile{{
 					Name:   "test.go",
 					RawURL: "http://test.dummy/test.go",
 				}},

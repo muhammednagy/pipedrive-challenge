@@ -2,7 +2,7 @@ package config
 
 import (
 	"flag"
-	"github.com/muhammednagy/pipedirve-challenge/models"
+	"github.com/muhammednagy/pipedirve-challenge/model"
 	log "github.com/sirupsen/logrus"
 	"os"
 )
@@ -17,7 +17,7 @@ var (
 	Port           = flag.String("port", os.Getenv("PORT"), "Listen to port")
 )
 
-func FlagParse() models.Config {
+func ParseFlags() model.Config {
 	flag.Parse()
 	if *showVersion {
 		log.Info("Build:", version, buildTime)
@@ -36,7 +36,7 @@ func FlagParse() models.Config {
 	}
 
 	log.Info("Build: " + version + " " + buildTime)
-	return models.Config{
+	return model.Config{
 		DBName:         *DBName,
 		GithubToken:    *GithubToken,
 		PipedriveToken: *pipedriveToken,

@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/google/go-github/v33/github"
-	"github.com/muhammednagy/pipedirve-challenge/models"
+	"github.com/muhammednagy/pipedirve-challenge/model"
 	"golang.org/x/oauth2"
 	"net/http"
 	"time"
@@ -12,7 +12,7 @@ import (
 
 // GetGists Will get all gists by a user in one requests if they are less than 100 or more than one request if they are more
 // if you provide githubToken it will be able to do more requests before it gets rate limited
-func GetGists(config models.Config, lastVisit *time.Time, username string) ([]*github.Gist, error) {
+func GetGists(config model.Config, lastVisit *time.Time, username string) ([]*github.Gist, error) {
 	tc := &http.Client{}
 	ctx := context.Background()
 	if config.GithubToken != "" {
