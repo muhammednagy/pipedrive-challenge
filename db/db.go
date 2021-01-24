@@ -24,7 +24,7 @@ func New(config models.Config) *gorm.DB {
 }
 
 func TestDB() *gorm.DB {
-	DBConnection, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+	DBConnection, err := gorm.Open(sqlite.Open("../test.db"), &gorm.Config{})
 	if err != nil {
 		log.Fatal("storage err: ", err)
 	}
@@ -33,8 +33,10 @@ func TestDB() *gorm.DB {
 }
 
 func DropTestDB() error {
-	if err := os.Remove("./test.db"); err != nil {
-		return err
+	if err := os.Remove("../test.db"); err != nil {
+		if err.Error() != "remove ../test.db: no such file or directory" {
+			return err
+		}
 	}
 	return nil
 }

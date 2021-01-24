@@ -4,14 +4,10 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/muhammednagy/pipedirve-challenge/handlers"
-	"github.com/muhammednagy/pipedirve-challenge/models"
 	echoSwagger "github.com/swaggo/echo-swagger"
-	"gorm.io/gorm"
 )
 
-func New(config models.Config, dbConnection *gorm.DB) *echo.Echo {
-	personHandler := handlers.NewPersonHandler(config, dbConnection)
-
+func New(personHandler *handlers.PersonHandler) *echo.Echo {
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
