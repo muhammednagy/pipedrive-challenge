@@ -37,8 +37,8 @@ func GetGists(config models.Config, lastVisit *time.Time, username string) ([]*g
 	}
 
 	if response.NextPage != 0 {
-		pagesCount := response.LastPage - 1
-		for i := 2; i < pagesCount; i++ {
+		pagesCount := response.LastPage
+		for i := 2; i <= pagesCount; i++ {
 			gistListOptions := github.GistListOptions{
 				ListOptions: github.ListOptions{
 					Page: i,
