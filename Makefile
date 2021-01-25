@@ -12,7 +12,7 @@ clean:
 	rm -f pipedrive
 
 test:
-	go test ./...
+	go test -p 1 ./...
 
 cover:
 	go test ./... -coverprofile cover.out

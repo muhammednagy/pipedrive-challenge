@@ -3,6 +3,7 @@ package handlers
 import (
 	"fmt"
 	"github.com/labstack/echo/v4"
+	"github.com/muhammednagy/pipedrive-challenge/config"
 	"github.com/muhammednagy/pipedrive-challenge/db"
 	"github.com/muhammednagy/pipedrive-challenge/model"
 	"github.com/muhammednagy/pipedrive-challenge/services/pipedrive"
@@ -11,11 +12,11 @@ import (
 )
 
 type PersonHandler struct {
-	config model.Config
+	config config.Config
 	db     *gorm.DB
 }
 
-func NewPersonHandler(config model.Config, db *gorm.DB) *PersonHandler {
+func NewPersonHandler(config config.Config, db *gorm.DB) *PersonHandler {
 	return &PersonHandler{config: config, db: db}
 }
 
@@ -50,8 +51,7 @@ func (h PersonHandler) GetPerson(c echo.Context) error {
 	person := people[0]
 	if person.LastVisit != nil && c.QueryParam("getAllGists") != "true" {
 		for _, gist := range person.Gists {
-			// convert to unix to avoid returning false if there is milliseconds difference
-			if gist.CreatedAt.Unix() == person.LastVisit.Unix() || gist.CreatedAt.After(*person.LastVisit) {
+			if sinceLastVisit(gist, person) {
 				gistsSinceLastVisit = append(gistsSinceLastVisit, gist)
 			}
 		}
@@ -74,9 +74,9 @@ func (h PersonHandler) SavePerson(c echo.Context) error {
 	if username == "" {
 		return c.String(http.StatusBadRequest, "missing github username")
 	}
-	pipedrivePersonID := pipedrive.CreatePerson(username, h.config.PipedriveToken)
+	pipedrivePersonID, err := pipedrive.CreatePerson(username, h.config.PipedriveToken)
 	if pipedrivePersonID == 0 {
-		return c.String(http.StatusInternalServerError, "error creating a person in pipedrive")
+		return c.String(http.StatusInternalServerError, fmt.Sprintf("error creating a person in pipedrive: %s", err))
 	}
 	person := model.Person{GithubUsername: username, PipedriveID: uint(pipedrivePersonID)}
 	if err := db.SavePerson(h.db, person); err != nil {
@@ -100,4 +100,12 @@ func (h PersonHandler) DeletePerson(c echo.Context) error {
 		return c.String(http.StatusBadRequest, fmt.Sprint("err deleting person: ", err))
 	}
 	return c.NoContent(http.StatusOK)
+}
+
+func sinceLastVisit(gist model.Gist, person model.Person) bool {
+	// convert to unix to avoid returning false if there is milliseconds difference
+	if gist.CreatedAt.Unix() == person.LastVisit.Unix() || gist.CreatedAt.After(*person.LastVisit) {
+		return true
+	}
+	return false
 }

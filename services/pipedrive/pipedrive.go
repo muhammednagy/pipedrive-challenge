@@ -4,29 +4,25 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/muhammednagy/pipedrive-challenge/model"
-	log "github.com/sirupsen/logrus"
 	"io/ioutil"
 	"net/http"
 )
 
-const pipedriveBase = "https://api.pipedrive.com/v1/"
+type CreatePersonResponse struct {
+	Data struct {
+		ID int `json:"id"`
+	} `json:"data"`
+	ResponseStatus
+}
 
-func makeRequest(token, path string, body []byte) ([]byte, error) {
-	res, err := http.Post(pipedriveBase+path+"?api_token="+token, "application/json", bytes.NewBuffer(body))
-	if err != nil {
-		return nil, fmt.Errorf("failed to send request error: %s", err)
-	}
-	body, err = ioutil.ReadAll(res.Body)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read request response error: %s", err)
-	}
-	return body, nil
+type ResponseStatus struct {
+	Error   string `json:"error"`
+	Success bool   `json:"success"`
 }
 
 // CreatePerson Create a new person in Pipedrive which should have the same name as the github username
-func CreatePerson(username, token string) int {
-	var createPersonResponse model.PipedriveCreatePersonResponse
+func CreatePerson(username, token string) (int, error) {
+	var createPersonResponse CreatePersonResponse
 	parameters := map[string]string{
 		"name": username,
 	}
@@ -34,25 +30,22 @@ func CreatePerson(username, token string) int {
 
 	body, err := makeRequest(token, "persons", parametersJSON)
 	if err != nil {
-		log.Error("Failed to create person in Pipedrive error: ", err)
-		return 0
+		return 0, fmt.Errorf("failed to create person in Pipedrive error: %s", err)
 	}
 	err = json.Unmarshal(body, &createPersonResponse)
 	if err != nil {
-		log.Error("Failed to create person in Pipedrive error: ", err)
-		return 0
+		return 0, fmt.Errorf("failed to create person in Pipedrive error: %s", err)
 	}
 	if !createPersonResponse.Success {
-		log.Error("Failed to create person in Pipedrive error: ", createPersonResponse.Error)
-		return 0
+		return 0, fmt.Errorf("failed to create person in Pipedrive error: %s", err)
 	}
-	return createPersonResponse.Data.ID
+	return createPersonResponse.Data.ID, nil
 }
 
 // CreateActivity Create a new activity connected to a person with subject and a note to hold gist info and its files links or
 // pull url if it's truncated due to big size
 func CreateActivity(subject, note, token string, personID uint) error {
-	var status model.PipedriveResponseStatus
+	var status ResponseStatus
 	parameters := struct {
 		Subject  string `json:"subject"`
 		Note     string `json:"note"`
@@ -76,4 +69,18 @@ func CreateActivity(subject, note, token string, personID uint) error {
 		return fmt.Errorf("failed to create activity in Pipedrive error: %s", status.Error)
 	}
 	return nil
+}
+
+const pipedriveBase = "https://api.pipedrive.com/v1/"
+
+func makeRequest(token, path string, body []byte) ([]byte, error) {
+	res, err := http.Post(pipedriveBase+path+"?api_token="+token, "application/json", bytes.NewBuffer(body))
+	if err != nil {
+		return nil, fmt.Errorf("failed to send request error: %s", err)
+	}
+	body, err = ioutil.ReadAll(res.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read request response error: %s", err)
+	}
+	return body, nil
 }

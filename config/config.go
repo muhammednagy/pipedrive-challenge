@@ -2,10 +2,20 @@ package config
 
 import (
 	"flag"
-	"github.com/muhammednagy/pipedrive-challenge/model"
 	log "github.com/sirupsen/logrus"
 	"os"
 )
+
+type Config struct {
+	DBName         string
+	TestDBName     string
+	DBUsername     string
+	DBPassword     string
+	DBHost         string
+	DBPort         string
+	GithubToken    string
+	PipedriveToken string
+}
 
 var (
 	buildTime      string
@@ -21,7 +31,7 @@ var (
 	DBPort         = flag.String("database_port", os.Getenv("DATABASE_PORT"), "MySQL DB port")
 )
 
-func ParseFlags() model.Config {
+func ParseFlags() Config {
 	flag.Parse()
 	if *showVersion {
 		log.Info("Build:", version, buildTime)
@@ -49,7 +59,7 @@ func ParseFlags() model.Config {
 	}
 
 	log.Info("Build: " + version + " " + buildTime)
-	return model.Config{
+	return Config{
 		DBName:         *DBName,
 		TestDBName:     *TestDBName,
 		DBUsername:     *DBUsername,

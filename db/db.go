@@ -2,13 +2,14 @@ package db
 
 import (
 	"fmt"
+	"github.com/muhammednagy/pipedrive-challenge/config"
 	"github.com/muhammednagy/pipedrive-challenge/model"
 	log "github.com/sirupsen/logrus"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
-func New(config model.Config) *gorm.DB {
+func New(config config.Config) *gorm.DB {
 	dbURL := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=UTC", config.DBUsername, config.DBPassword, config.DBHost, config.DBPort, config.DBName)
 	dbConnection, err := gorm.Open(mysql.Open(dbURL), &gorm.Config{})
 	if err != nil {
@@ -22,7 +23,7 @@ func New(config model.Config) *gorm.DB {
 	return dbConnection
 }
 
-func TestDB(config model.Config) *gorm.DB {
+func TestDB(config config.Config) *gorm.DB {
 	dbURL := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=UTC", config.DBUsername, config.DBPassword, config.DBHost, config.DBPort, config.TestDBName)
 	dbConnection, err := gorm.Open(mysql.Open(dbURL), &gorm.Config{})
 	if err != nil {

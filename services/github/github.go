@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/google/go-github/v33/github"
-	"github.com/muhammednagy/pipedrive-challenge/model"
+	"github.com/muhammednagy/pipedrive-challenge/config"
 	"golang.org/x/oauth2"
 	"net/http"
 	"time"
@@ -12,9 +12,8 @@ import (
 
 // GetGists Will get all gists by a user in one requests if they are less than 100 or more than one request if they are more
 // if you provide githubToken it will be able to do more requests before it gets rate limited
-func GetGists(config model.Config, lastVisit *time.Time, username string) ([]*github.Gist, error) {
+func GetGists(ctx context.Context, config config.Config, lastVisit *time.Time, username string) ([]*github.Gist, error) {
 	tc := &http.Client{}
-	ctx := context.Background()
 	if config.GithubToken != "" {
 		ts := oauth2.StaticTokenSource(
 			&oauth2.Token{AccessToken: config.GithubToken},

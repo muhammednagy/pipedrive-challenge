@@ -16,18 +16,18 @@ import (
 )
 
 var (
-	d *gorm.DB
-	h *PersonHandler
-	e *echo.Echo
+	dbConnection  *gorm.DB
+	personHandler *PersonHandler
+	e             *echo.Echo
 )
 
 func setup() {
-	d = db.TestDB(config.ParseFlags())
-	util.TearDown(d)
-	_ = db.AutoMigrate(d)
-	h = NewPersonHandler(model.Config{}, d)
+	dbConnection = db.TestDB(config.ParseFlags())
+	util.TearDown(dbConnection)
+	_ = db.AutoMigrate(dbConnection)
+	personHandler = NewPersonHandler(config.Config{}, dbConnection)
 	e = echo.New()
-	_ = util.LoadFixtures(d)
+	_ = util.LoadFixtures(dbConnection)
 }
 
 func TestGetPeople(t *testing.T) {
@@ -35,7 +35,7 @@ func TestGetPeople(t *testing.T) {
 	req := httptest.NewRequest(echo.GET, "/api/v1/people", nil)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
-	assert.NoError(t, h.GetAllPeople(c))
+	assert.NoError(t, personHandler.GetAllPeople(c))
 	if assert.Equal(t, http.StatusOK, rec.Code) {
 		var response []model.Person
 		err := json.Unmarshal(rec.Body.Bytes(), &response)
@@ -83,7 +83,7 @@ func TestSavePerson(t *testing.T) {
 		req.URL.RawQuery = q.Encode()
 		rec := httptest.NewRecorder()
 		c := e.NewContext(req, rec)
-		assert.NoError(t, h.SavePerson(c))
+		assert.NoError(t, personHandler.SavePerson(c))
 		assert.Equal(t, tp.statusCode, rec.Code)
 	}
 }
@@ -110,7 +110,7 @@ func TestDeletePerson(t *testing.T) {
 		c := e.NewContext(req, rec)
 		c.SetParamNames("username")
 		c.SetParamValues(tp.username)
-		assert.NoError(t, h.DeletePerson(c))
+		assert.NoError(t, personHandler.DeletePerson(c))
 		assert.Equal(t, tp.statusCode, rec.Code)
 	}
 }
@@ -162,7 +162,7 @@ func TestGetPerson(t *testing.T) {
 		c := e.NewContext(req, rec)
 		c.SetParamNames("username")
 		c.SetParamValues(tp.username)
-		assert.NoError(t, h.GetPerson(c))
+		assert.NoError(t, personHandler.GetPerson(c))
 		if assert.Equal(t, tp.statusCode, rec.Code) && tp.statusCode != http.StatusNotFound {
 			var response model.Person
 			err := json.Unmarshal(rec.Body.Bytes(), &response)

@@ -1,6 +1,7 @@
 package exporter
 
 import (
+	"context"
 	"github.com/jarcoal/httpmock"
 	"github.com/muhammednagy/pipedrive-challenge/config"
 	"github.com/muhammednagy/pipedrive-challenge/db"
@@ -27,7 +28,7 @@ func setup() *gorm.DB {
 func TestExportGists(t *testing.T) {
 	dbConnection := setup()
 	defer httpmock.DeactivateAndReset()
-	ExportGists(dbConnection, model.Config{})
+	ExportGists(context.Background(), dbConnection, config.Config{})
 	p := db.GetPeople(dbConnection, "muhammednagy")
 	assert.Equal(t, 1, len(p))
 	assert.Equal(t, 11, len(p[0].Gists))
