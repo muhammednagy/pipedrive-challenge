@@ -2,8 +2,8 @@ package util
 
 import (
 	"github.com/jarcoal/httpmock"
-	"github.com/muhammednagy/pipedirve-challenge/db"
-	"github.com/muhammednagy/pipedirve-challenge/model"
+	"github.com/muhammednagy/pipedrive-challenge/db"
+	"github.com/muhammednagy/pipedrive-challenge/model"
 	log "github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 	"time"

@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/google/go-github/v33/github"
-	"github.com/muhammednagy/pipedirve-challenge/model"
+	"github.com/muhammednagy/pipedrive-challenge/model"
 	"golang.org/x/oauth2"
 	"net/http"
 	"time"

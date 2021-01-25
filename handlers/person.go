@@ -3,9 +3,9 @@ package handlers
 import (
 	"fmt"
 	"github.com/labstack/echo/v4"
-	"github.com/muhammednagy/pipedirve-challenge/db"
-	"github.com/muhammednagy/pipedirve-challenge/model"
-	"github.com/muhammednagy/pipedirve-challenge/services/pipedrive"
+	"github.com/muhammednagy/pipedrive-challenge/db"
+	"github.com/muhammednagy/pipedrive-challenge/model"
+	"github.com/muhammednagy/pipedrive-challenge/services/pipedrive"
 	"gorm.io/gorm"
 	"net/http"
 )

@@ -2,10 +2,10 @@ package exporter
 
 import (
 	"github.com/jarcoal/httpmock"
-	"github.com/muhammednagy/pipedirve-challenge/config"
-	"github.com/muhammednagy/pipedirve-challenge/db"
-	"github.com/muhammednagy/pipedirve-challenge/model"
-	"github.com/muhammednagy/pipedirve-challenge/testing/util"
+	"github.com/muhammednagy/pipedrive-challenge/config"
+	"github.com/muhammednagy/pipedrive-challenge/db"
+	"github.com/muhammednagy/pipedrive-challenge/model"
+	"github.com/muhammednagy/pipedrive-challenge/testing/util"
 	"github.com/stretchr/testify/assert"
 	"gorm.io/gorm"
 	"testing"

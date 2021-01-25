@@ -1,12 +1,12 @@
 package main
 
 import (
-	"github.com/muhammednagy/pipedirve-challenge/config"
-	"github.com/muhammednagy/pipedirve-challenge/db"
-	_ "github.com/muhammednagy/pipedirve-challenge/docs"
-	"github.com/muhammednagy/pipedirve-challenge/handlers"
-	"github.com/muhammednagy/pipedirve-challenge/router"
-	"github.com/muhammednagy/pipedirve-challenge/services/gist/exporter"
+	"github.com/muhammednagy/pipedrive-challenge/config"
+	"github.com/muhammednagy/pipedrive-challenge/db"
+	_ "github.com/muhammednagy/pipedrive-challenge/docs"
+	"github.com/muhammednagy/pipedrive-challenge/handlers"
+	"github.com/muhammednagy/pipedrive-challenge/router"
+	"github.com/muhammednagy/pipedrive-challenge/services/gist/exporter"
 	log "github.com/sirupsen/logrus"
 	"time"
 )

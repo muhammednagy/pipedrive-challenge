@@ -2,10 +2,10 @@ package exporter
 
 import (
 	"fmt"
-	"github.com/muhammednagy/pipedirve-challenge/db"
-	"github.com/muhammednagy/pipedirve-challenge/model"
-	"github.com/muhammednagy/pipedirve-challenge/services/github"
-	"github.com/muhammednagy/pipedirve-challenge/services/pipedrive"
+	"github.com/muhammednagy/pipedrive-challenge/db"
+	"github.com/muhammednagy/pipedrive-challenge/model"
+	"github.com/muhammednagy/pipedrive-challenge/services/github"
+	"github.com/muhammednagy/pipedrive-challenge/services/pipedrive"
 	log "github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 	"time"

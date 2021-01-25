@@ -3,7 +3,7 @@ BUILDTIME=`date "+%F %T%Z"`
 VERSION=`git describe --tags`
 
 build:
-	go build -ldflags="-X 'github.com/muhammednagy/pipedirve-challenge/config.buildTime=$(BUILDTIME)' -X 'github.com/muhammednagy/pipedirve-challenge/config.version=$(VERSION)' -s -w" -o pipedrive $(FILES)
+	go build -ldflags="-X 'github.com/muhammednagy/pipedrive-challenge/config.buildTime=$(BUILDTIME)' -X 'github.com/muhammednagy/pipedrive-challenge/config.version=$(VERSION)' -s -w" -o pipedrive $(FILES)
 
 run:
 	go run $(FILES)

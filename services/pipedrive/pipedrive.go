@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/muhammednagy/pipedirve-challenge/model"
+	"github.com/muhammednagy/pipedrive-challenge/model"
 	log "github.com/sirupsen/logrus"
 	"io/ioutil"
 	"net/http"

@@ -1,4 +1,4 @@
-module github.com/muhammednagy/pipedirve-challenge
+module github.com/muhammednagy/pipedrive-challenge
 
 go 1.15
 
