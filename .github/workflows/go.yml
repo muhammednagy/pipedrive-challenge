@@ -10,6 +10,16 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     name: Tests
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_DATABASE: test_pipedrive
+          MYSQL_ROOT_PASSWORD: "pipedrive"
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=10
+
     steps:
       - name: Set up Go 1.x
         uses: actions/setup-go@v2
@@ -24,11 +34,14 @@ jobs:
         run: |
           go get -v -t -d ./...
 
-      - name: Test
-        run: go test -race -v ./...
-
       - name: Build
         run: go build -v ./...
+
+      - name: Test
+        env:
+          DATABASE_PORT:  ${{ job.services.mysql.ports[3306] }}
+          DATABASE_USERNAME:  "root"
+        run: go test -race -v -p 1 ./...
 
   errcheck:
     name: Errcheck

@@ -17,6 +17,9 @@ import (
 // @contact.email me@muhnagy.com
 func main() {
 	configuration := config.ParseFlags()
+	if configuration.PipedriveToken == "" {
+		log.Fatal("Pipedrive Token is required!")
+	}
 	dbConnection := db.New(configuration)
 	personHandler := handlers.NewPersonHandler(configuration, dbConnection)
 	r := router.New(personHandler)
@@ -29,5 +32,5 @@ func main() {
 		}
 	}(autoFetchGistsTicker)
 
-	log.Fatal(r.Start("127.0.0.1" + configuration.Port))
+	log.Fatal(r.Start("0.0.0.0:3000"))
 }

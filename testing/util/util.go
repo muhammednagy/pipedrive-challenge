@@ -9,8 +9,8 @@ import (
 	"time"
 )
 
-func TearDown() {
-	if err := db.DropTestDB(); err != nil {
+func TearDown(dbConnection *gorm.DB) {
+	if err := db.DropTestDB(dbConnection); err != nil {
 		log.Fatal(err)
 	}
 }

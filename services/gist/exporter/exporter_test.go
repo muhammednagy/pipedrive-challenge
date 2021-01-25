@@ -2,6 +2,7 @@ package exporter
 
 import (
 	"github.com/jarcoal/httpmock"
+	"github.com/muhammednagy/pipedirve-challenge/config"
 	"github.com/muhammednagy/pipedirve-challenge/db"
 	"github.com/muhammednagy/pipedirve-challenge/model"
 	"github.com/muhammednagy/pipedirve-challenge/testing/util"
@@ -11,7 +12,8 @@ import (
 )
 
 func setup() *gorm.DB {
-	d := db.TestDB()
+	d := db.TestDB(config.ParseFlags())
+	util.TearDown(d)
 	_ = db.AutoMigrate(d)
 	d.Create(&model.Person{
 		GithubUsername: "muhammednagy",
@@ -23,10 +25,10 @@ func setup() *gorm.DB {
 }
 
 func TestExportGists(t *testing.T) {
-	util.TearDown()
 	dbConnection := setup()
 	defer httpmock.DeactivateAndReset()
 	ExportGists(dbConnection, model.Config{})
-	p1 := db.GetPeople(dbConnection, "muhammednagy")[0]
-	assert.Equal(t, 11, len(p1.Gists))
+	p := db.GetPeople(dbConnection, "muhammednagy")
+	assert.Equal(t, 1, len(p))
+	assert.Equal(t, 11, len(p[0].Gists))
 }
