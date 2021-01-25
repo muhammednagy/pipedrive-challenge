@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/jarcoal/httpmock"
 	"github.com/labstack/echo/v4"
+	"github.com/muhammednagy/pipedirve-challenge/config"
 	"github.com/muhammednagy/pipedirve-challenge/db"
 	"github.com/muhammednagy/pipedirve-challenge/model"
 	"github.com/muhammednagy/pipedirve-challenge/testing/util"
@@ -21,7 +22,8 @@ var (
 )
 
 func setup() {
-	d = db.TestDB()
+	d = db.TestDB(config.ParseFlags())
+	util.TearDown(d)
 	_ = db.AutoMigrate(d)
 	h = NewPersonHandler(model.Config{}, d)
 	e = echo.New()
@@ -29,7 +31,6 @@ func setup() {
 }
 
 func TestGetPeople(t *testing.T) {
-	util.TearDown()
 	setup()
 	req := httptest.NewRequest(echo.GET, "/api/v1/people", nil)
 	rec := httptest.NewRecorder()
@@ -44,7 +45,6 @@ func TestGetPeople(t *testing.T) {
 }
 
 func TestSavePerson(t *testing.T) {
-	util.TearDown()
 	setup()
 	testCases := map[string]struct {
 		statusCode int
@@ -89,7 +89,6 @@ func TestSavePerson(t *testing.T) {
 }
 
 func TestDeletePerson(t *testing.T) {
-	util.TearDown()
 	setup()
 	testCases := map[string]struct {
 		statusCode int
@@ -117,7 +116,6 @@ func TestDeletePerson(t *testing.T) {
 }
 
 func TestGetPerson(t *testing.T) {
-	util.TearDown()
 	setup()
 	testCases := map[string]struct {
 		params         map[string]string

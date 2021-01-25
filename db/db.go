@@ -4,18 +4,17 @@ import (
 	"fmt"
 	"github.com/muhammednagy/pipedirve-challenge/model"
 	log "github.com/sirupsen/logrus"
-	"gorm.io/driver/sqlite" // sqlite database driver
+	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"os"
 )
 
 func New(config model.Config) *gorm.DB {
-	dbConnection, err := gorm.Open(sqlite.Open(config.DBName), &gorm.Config{})
+	dbURL := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=UTC", config.DBUsername, config.DBPassword, config.DBHost, config.DBPort, config.DBName)
+	dbConnection, err := gorm.Open(mysql.Open(dbURL), &gorm.Config{})
 	if err != nil {
-		fmt.Println("Cannot connect to  database")
-		log.Fatal("storage err: ", err)
+		fmt.Println("Cannot connect to MySQL database")
+		log.Fatal("database connection error: ", err)
 	}
-	dbConnection.Exec("PRAGMA foreign_keys = ON")
 	err = AutoMigrate(dbConnection)
 	if err != nil {
 		fmt.Println("failed to auto migrate error: ", err)
@@ -23,20 +22,24 @@ func New(config model.Config) *gorm.DB {
 	return dbConnection
 }
 
-func TestDB() *gorm.DB {
-	DBConnection, err := gorm.Open(sqlite.Open("../test.db"), &gorm.Config{})
+func TestDB(config model.Config) *gorm.DB {
+	dbURL := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=UTC", config.DBUsername, config.DBPassword, config.DBHost, config.DBPort, config.TestDBName)
+	dbConnection, err := gorm.Open(mysql.Open(dbURL), &gorm.Config{})
 	if err != nil {
-		log.Fatal("storage err: ", err)
+		log.Fatal("database connection error: ", err)
 	}
-	DBConnection.Exec("PRAGMA foreign_keys = ON")
-	return DBConnection
+	return dbConnection
 }
 
-func DropTestDB() error {
-	if err := os.Remove("../test.db"); err != nil {
-		if err.Error() != "remove ../test.db: no such file or directory" {
-			return err
-		}
+func DropTestDB(dbConnection *gorm.DB) error {
+	if err := dbConnection.Migrator().DropTable(&model.GistFile{}); err != nil {
+		return err
+	}
+	if err := dbConnection.Migrator().DropTable(&model.Gist{}); err != nil {
+		return err
+	}
+	if err := dbConnection.Migrator().DropTable(&model.Person{}); err != nil {
+		return err
 	}
 	return nil
 }

@@ -3,17 +3,10 @@ package model
 import "time"
 
 type (
-	Config struct {
-		DBName         string
-		GithubToken    string
-		PipedriveToken string
-		Port           string
-	}
-
 	DBModel struct {
 		ID        uint      `gorm:"primary_key;auto_increment" json:"id"`
-		CreatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
-		UpdatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
+		CreatedAt time.Time `json:"created_at"`
+		UpdatedAt time.Time `json:"updated_at"`
 	}
 
 	Person struct {
