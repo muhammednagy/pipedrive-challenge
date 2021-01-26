@@ -15,7 +15,7 @@ services:
 
   app:
     restart: always
-    build: .
+    image: gcr.io/pipedrive-nagy/pipedrive
     environment:
       PIPEDRIVE_TOKEN: "Your Pipedrive Token"
       DATABASE_HOST: "db"
