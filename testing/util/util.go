@@ -81,9 +81,5 @@ func LoadFixtures(d *gorm.DB) error {
 		return err
 	}
 
-	if err := d.Create(&p2).Error; err != nil {
-		return err
-	}
-
-	return nil
+	return d.Create(&p2).Error
 }

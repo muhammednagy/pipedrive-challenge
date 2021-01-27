@@ -39,10 +39,7 @@ func DropTestDB(dbConnection *gorm.DB) error {
 	if err := dbConnection.Migrator().DropTable(&model.Gist{}); err != nil {
 		return err
 	}
-	if err := dbConnection.Migrator().DropTable(&model.Person{}); err != nil {
-		return err
-	}
-	return nil
+	return dbConnection.Migrator().DropTable(&model.Person{})
 }
 
 func AutoMigrate(db *gorm.DB) error {
