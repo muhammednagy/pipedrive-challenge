@@ -19,3 +19,8 @@
 
 # Ignore sqlite db 
 *.sqlite3
+/deploy/terraform/.terraform.lock.hcl
+/deploy/terraform/terraform.tfstate
+/deploy/terraform/terraform.tfstate.backup
+/deploy/terraform/.terraform/
+/deploy/credentials/serviceaccount.json

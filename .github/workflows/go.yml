@@ -8,6 +8,8 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+  PIPEDRIVE_CLUSTER: ${{ secrets.PIPEDRIVE_CLUSTER }}
+  GKE_ZONE: ${{ secrets.GKE_ZONE }}
   IMAGE: pipedrive
 
 jobs:
@@ -124,10 +126,13 @@ jobs:
           docker build \
             --tag "gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA" \
             --tag "gcr.io/$PROJECT_ID/$IMAGE:latest" \
-            --build-arg GITHUB_SHA="$GITHUB_SHA" \
-            --build-arg GITHUB_REF="$GITHUB_REF" \
             .
       # Push the Docker image to Google Container Registry
       - name: Publish
         run: |-
           docker push "gcr.io/$PROJECT_ID/$IMAGE"
+
+      # Get service account and set it to a file
+      - name: deploy
+        run: |-
+          cd deploy && ./deploy.sh $PROJECT_ID $PIPEDRIVE_CLUSTER $GKE_ZONE
