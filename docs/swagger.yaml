@@ -71,7 +71,6 @@ paths:
       summary: gets all people who their gists are being monitored
       tags:
       - Person
-  /api/v1/person:
     post:
       consumes:
       - application/x-www-form-urlencoded
@@ -92,7 +91,7 @@ paths:
       summary: Creates person
       tags:
       - Person
-  /api/v1/person/{username}:
+  /api/v1/people/{username}:
     delete:
       description: Deletes person using username
       parameters:

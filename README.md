@@ -30,8 +30,10 @@ To clean the binary file: ```make clean```
 or you can just run it via docker-compose. please make sure to update the Pipedrive token first.
 `docker-compose up -d` application should be listening on port  3000 afterward.
 ### API
+The app is currently running at http://35.228.193.213
 The app support creates, read and delete operations.
-For more details please take a look at the application swagger running at `/documentation/index.html`
+For more details please take a look at the application swagger running at `/documentation/index.html` 
+or [here](http://35.228.193.213/documentation/index.html)
 
 * `GET` `/api/v1/people` - get all people who their gists are being tracked
 * `GET` `/api/v1/people/:username` - get a person gists since the last visit (can also get all gists. please look at swagger for more details)

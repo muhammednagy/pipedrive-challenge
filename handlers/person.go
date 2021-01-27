@@ -41,7 +41,7 @@ func (h PersonHandler) GetAllPeople(c echo.Context) error {
 // @Param getAllGists query bool false "get all gists not only the ones added since last visit"
 // @Success 200 {object} model.Person
 // @Failure 404 {object} string
-// @Router /api/v1/person/{username} [get]
+// @Router /api/v1/people/{username} [get]
 func (h PersonHandler) GetPerson(c echo.Context) error {
 	people := db.GetPeople(h.db, c.Param("username"))
 	if len(people) == 0 {
@@ -68,7 +68,7 @@ func (h PersonHandler) GetPerson(c echo.Context) error {
 // @Param username formData string  true "username"
 // @Success 201
 // @Failure 400 {string} string	"error"
-// @Router /api/v1/person [post]
+// @Router /api/v1/people [post]
 func (h PersonHandler) SavePerson(c echo.Context) error {
 	username := c.FormValue("username")
 	if username == "" {
@@ -93,7 +93,7 @@ func (h PersonHandler) SavePerson(c echo.Context) error {
 // @Param username path string true "github username of the user you want to delete"
 // @Success 200
 // @Failure 400 {string} string	"error"
-// @Router /api/v1/person/{username} [delete]
+// @Router /api/v1/people/{username} [delete]
 func (h PersonHandler) DeletePerson(c echo.Context) error {
 	err := db.DeletePerson(h.db, c.Param("username"))
 	if err != nil {

@@ -48,9 +48,7 @@ var doc = `{
                         }
                     }
                 }
-            }
-        },
-        "/api/v1/person": {
+            },
             "post": {
                 "description": "Creates person using json",
                 "consumes": [
@@ -82,7 +80,7 @@ var doc = `{
                 }
             }
         },
-        "/api/v1/person/{username}": {
+        "/api/v1/people/{username}": {
             "get": {
                 "description": "gets a specific person based on their username",
                 "produces": [
