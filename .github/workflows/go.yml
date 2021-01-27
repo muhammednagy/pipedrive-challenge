@@ -10,6 +10,8 @@ env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
   PIPEDRIVE_CLUSTER: ${{ secrets.PIPEDRIVE_CLUSTER }}
   GKE_ZONE: ${{ secrets.GKE_ZONE }}
+  PIPEDRIVE_TOKEN: ${{ secrets.PIPEDRIVE_TOKEN }}
+  GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
   IMAGE: pipedrive
 
 jobs:
@@ -135,4 +137,4 @@ jobs:
       # Get service account and set it to a file
       - name: deploy
         run: |-
-          cd deploy && ./deploy.sh $PROJECT_ID $PIPEDRIVE_CLUSTER $GKE_ZONE
+          cd deploy && ./deploy.sh $PROJECT_ID $PIPEDRIVE_CLUSTER $GKE_ZONE "" $PIPEDRIVE_TOKEN $GITHUB_TOKEN

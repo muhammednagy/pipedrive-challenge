@@ -33,8 +33,10 @@ spec:
             - name: DATABASE_HOST
               value: db
             - name: PIPEDRIVE_TOKEN
-              value: Your Pipedrive Token
-          image: gcr.io/pipedrive-nagy/pipedrive:latest
+              value: "PD_TOKEN"
+            - name: GITHUB_TOKEN
+              value: "GH_TOKEN"
+          image: gcr.io/pipedrive-nagy/pipedrive:COMMIT_SHA
           name: app
           ports:
             - containerPort: 3000
