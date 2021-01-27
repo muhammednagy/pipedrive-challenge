@@ -46,6 +46,7 @@ func TestGetPeople(t *testing.T) {
 
 func TestSavePerson(t *testing.T) {
 	setup()
+	httpmock.DeactivateAndReset() // make sure http is not mocked before starting this test
 	testCases := map[string]struct {
 		statusCode int
 		username   string
