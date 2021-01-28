@@ -23,7 +23,5 @@ services:
     ports:
       - "3000:3000"
     command: ["/usr/local/bin/wait-for-mysql.sh", "db:3306", "--", "./pipedrive"]
-    depends_on:
-      - db
 volumes:
   dbdata:
