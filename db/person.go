@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/muhammednagy/pipedrive-challenge/model"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 // GetPeople Gets all persons if not supplied with username
@@ -29,6 +30,9 @@ func DeletePerson(dbConnection *gorm.DB, username string) error {
 		return fmt.Errorf("person not found")
 	}
 	person := people[0]
-	err := dbConnection.Delete(&person).Error
+	if len(person.Gists) > 0 {
+		dbConnection.Select(clause.Associations).Delete(&person.Gists)
+	}
+	err := dbConnection.Select(clause.Associations).Delete(&person).Error
 	return err
 }
