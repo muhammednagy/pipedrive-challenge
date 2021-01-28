@@ -46,12 +46,12 @@ every merge request. It checks for a wide variety of things including running te
 errors checking, and security check
 
 it will also automatically build an image of the app and tag it if all the previous checks passed.
-the docker images will be deployed to the Google cloud containers registry. project id and service account are defined in repo secrets to ensure security of the key and ease of changing the project id or the service key without updating the code.
+the docker images will be deployed to the Google cloud containers registry. project id and service account are defined in repo secrets to ensure the security of the key and ease of changing the project id or the service key without updating the code.
 
 also, during the CI/CD process, we run a code quality check on the application also for possible performance issues and anti-patterns
 which brings huge value to the software process delivery along with the other checks mentioned earlier.
 ## Part III - The cloud
-* Ror running the checks on user gists I didn't have to use any ops related solution, but I used golang built-in schedulers.
+* For running the checks on user gists I didn't have to use any ops related solution, but I used golang built-in schedulers.
   a function that would get all users and then fetch their gists then make activities in Pipedrive every 3 hours.
 
 * The docker image is following the builder pattern where we build on one container then run from another container.
@@ -110,3 +110,10 @@ which brings huge value to the software process delivery along with the other ch
     the other to run the script
 
   I decided to use the second option
+* I realized after finishing that I could have implemented the function that fetches new gists to work as a cron job.
+  since mostly the app won't be using much CPU or RAM and there will be a spike every 3 hours. it might be a better idea 
+  to just have it run separately and logged separately.
+  according to [here](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/) it's currently in beta.
+, so I decided not to merge into master, but I added the feature so that it could be easily merged in the future 
+  if we decide that it's ok to have a beta feature used in our cluster.
+  It's currently on branch [feature/fetch-new-gists-cron-job](https://github.com/muhammednagy/pipedrive-challenge/tree/feature/fetch-new-gists-cron-job)
