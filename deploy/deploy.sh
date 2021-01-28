@@ -30,5 +30,6 @@ kubectl apply -f db-service.yaml
 kubectl apply -f db-deployment.yaml
 kubectl apply -f app-service.yaml
 kubectl apply -f app-deployment.yaml
+kubectl apply -f cronjob.yaml
 
 echo "Your app is now running at $(kubectl get svc app -o json | jq -r .status.loadBalancer.ingress[].ip)"

@@ -9,7 +9,6 @@ import (
 	"github.com/muhammednagy/pipedrive-challenge/router"
 	"github.com/muhammednagy/pipedrive-challenge/services/gist/exporter"
 	log "github.com/sirupsen/logrus"
-	"time"
 )
 
 // @title Pipedrive DevOps Challenge
@@ -21,18 +20,15 @@ func main() {
 	if configuration.PipedriveToken == "" {
 		log.Fatal("Pipedrive Token is required!")
 	}
+	getGistsCtx := context.Background() // context to be used with get gists. can be used to set timeouts for github API in the future
 	dbConnection := db.New(configuration)
-	personHandler := handlers.NewPersonHandler(configuration, dbConnection)
-	r := router.New(personHandler)
+	if configuration.FetchNewGists {
+		exporter.ExportGists(getGistsCtx, dbConnection, configuration)
+		log.Info("Finished fetching new gists")
+	} else {
+		personHandler := handlers.NewPersonHandler(configuration, dbConnection)
+		r := router.New(personHandler)
+		log.Fatal(r.Start("0.0.0.0:3000"))
+	}
 
-	autoFetchGistsTicker := time.NewTicker(3 * time.Hour) // tick once every 3 hours
-	getGistsCtx := context.Background()                   // context to be used with get gists. can be used to set timeouts for github API in the future
-	// Watch for ticks and with every tick trigger exporting new gists for current users to pipedrive and DB
-	go func(ticker *time.Ticker) {
-		for ; true; <-ticker.C {
-			exporter.ExportGists(getGistsCtx, dbConnection, configuration)
-		}
-	}(autoFetchGistsTicker)
-
-	log.Fatal(r.Start("0.0.0.0:3000"))
 }

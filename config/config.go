@@ -15,12 +15,14 @@ type Config struct {
 	DBPort         string
 	GithubToken    string
 	PipedriveToken string
+	FetchNewGists  bool
 }
 
 var (
 	buildTime      string
 	version        string
 	showVersion    = flag.Bool("version", false, "Print version")
+	fetchNewGists  = flag.Bool("fetch_new_gists", false, "run job to fetch new gists and save them to DB")
 	pipedriveToken = flag.String("pipedrive_token", os.Getenv("PIPEDRIVE_TOKEN"), "Pipedrive token")
 	GithubToken    = flag.String("github_token", os.Getenv("GITHUB_TOKEN"), "github API token")
 	DBName         = flag.String("database_name", os.Getenv("DATABASE_NAME"), "MySQL DB name")
@@ -68,5 +70,6 @@ func ParseFlags() Config {
 		DBPort:         *DBPort,
 		GithubToken:    *GithubToken,
 		PipedriveToken: *pipedriveToken,
+		FetchNewGists: *fetchNewGists,
 	}
 }

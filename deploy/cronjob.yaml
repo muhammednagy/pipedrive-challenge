@@ -1,0 +1,27 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: fetch new gists
+spec:
+  schedule: "0 */3 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: fetch-new-gists
+              image: gcr.io/pipedrive-nagy/pipedrive:COMMIT_SHA
+              imagePullPolicy: IfNotPresent
+              args:
+                - /usr/local/bin/wait-for-mysql.sh
+                - db:3306
+                - --
+                - ./pipedrive --fetch_new_gists
+              env:
+                - name: DATABASE_HOST
+                  value: db
+                - name: PIPEDRIVE_TOKEN
+                  value: "PD_TOKEN"
+                - name: GITHUB_TOKEN
+                  value: "GH_TOKEN"
+          restartPolicy: OnFailure
